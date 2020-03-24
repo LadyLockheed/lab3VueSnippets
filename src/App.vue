@@ -1,33 +1,40 @@
 <template>
   <div id="app">
-    
-    <!-- <img src="./assets/Logga.svg" alt="logo"> -->
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-    <myHeader/>
+  
+    <Header/>
+    <Latest/>
+    <Popular/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import myHeader from './components/myHeader.vue'
+
+import Header from './components/Header.vue'
+import Latest from './components/Latest.vue'
+import Popular from './components/Popular.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
-    myHeader,
+   
+    Header,
+    Latest,
+    Popular
   }
 }
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  box-sizing:border-box;
+  padding: 0;
+  margin: 0;
+  /* font-family: Avenir, Helvetica, Arial, sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  
   color: #2c3e50;
-  margin-top: 60px;
+  
   background-color:#595959
 }
 </style>
