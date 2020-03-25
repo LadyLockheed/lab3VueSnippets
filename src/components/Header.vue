@@ -1,25 +1,19 @@
 <template>
+ 
+  <div class="header">
+    <img src="../assets/Logga.svg" alt="logo">
+    
+    <div class="navBar">
+ 
+      <ul>
+        <li @click="handleDisplaySnippets">Snippets</li>
+        <li @click="handleDisplayAddSnippet">Lägg till snippet</li>
+      </ul>
+  
+    </div>
     
 
-    <div class="header">
-<img src="../assets/Logga.svg" alt="logo">
-<div class="navBar">
- 
-    <nav>
-      <ul>
-        <li><a href="Latest">Senaste</a></li>
-        <li><a href="Popular">Topplista</a></li>
-        <li><a href="AddSnippet">Lägg till snippet</a></li>
-        <li><a href="Reported">Rapportereade snippets</a></li>
-        <li><a href="Login">Logga in</a></li>
-      </ul>
-
-    </nav>
-   
-
-</div>
-
-    </div>
+  </div>
 
 
 </template>
@@ -27,12 +21,25 @@
 <script>
 export default {
 
-    data:()=>({
-
+  data:()=>({
+    
+    displaySnippets:"",
+    displayAddSnippet:""
         
-    })
+  }),
+  methods:{
+    handleDisplaySnippets(){
+      console.log("klick funkar");
+   
+    },
+    handleDisplayAddSnippet(){
+      console.log("klick 2 funkar");
+      
+    }
+  }
 
 }
+
 </script>
 <style scoped>
 
@@ -40,6 +47,7 @@ export default {
   display:flex;
   flex-direction:row;
   padding:0.5em;
+  justify-content:space-between;
 
 }
 .navBar{
@@ -47,13 +55,9 @@ export default {
   margin-top:0.3em;
   margin-left:0.5em;
   color: #FAD9FF;
-  border:2px solid green;
   font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size:1em;
  
-}
-a{
-  text-decoration:none;
-  color:#FAD9FF;
 }
 li:hover{
     border-bottom:4px solid #FAD9FF;
@@ -69,6 +73,7 @@ ul {
 li {
   display: inline-block;
   margin: 0 10px;
+  
 }
 
 </style>

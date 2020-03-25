@@ -1,8 +1,8 @@
 <template>
     
 
-    <div class="latest">
-
+    <div class="snippets">
+       
     </div>
 
 
@@ -20,6 +20,8 @@ export default {
 </script>
 <style scoped>
 
-
+.snippets{
+    border:1px solid lightgreen;
+}
 
 </style>
