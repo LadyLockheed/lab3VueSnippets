@@ -41,7 +41,9 @@ export default {
 
     },
     handleDisplayHome(){
-
+      console.log("Klick på image funkar");
+      
+      this.$emit("showHome")
 
     }
  
@@ -69,15 +71,16 @@ export default {
   font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   font-size:1.2em;
   font-weight: bold;
-  padding-bottom:1em;
+  
  
 }
 img{
   margin-left:1em;
 }
 li:hover{
-    border-bottom:4px solid #FAD9FF;
-    
+  
+    border-bottom:3px solid #FAD9FF;
+
 }
 .active{
     border-bottom:4px solid #FAD9FF;
@@ -88,7 +91,9 @@ ul {
 }
 li {
   display: inline-block;
-  margin: 1em 1em 0 1em;
+  margin: 1em 1em 0em 1em;
+  padding-bottom:0.5em;
+  
   
 }
 

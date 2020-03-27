@@ -4,7 +4,7 @@
     
  
   
-    <Header @showSnippets="onSnippetClick" @showAddSnippet="onAddSnippetClick"/>
+    <Header @showSnippets="onSnippetClick" @showAddSnippet="onAddSnippetClick" @showHome="onHomeClick"/>
 
     <Home v-if="!displaySnippets && !displayAddSnippets"/>
  
@@ -58,6 +58,11 @@ export default {
   
       this.displayAddSnippets=value;
       this.displaySnippets=false;
+    },
+    onHomeClick(){
+      this.displayAddSnippets=false;
+      this.displaySnippets=false;
+
     }
     
 

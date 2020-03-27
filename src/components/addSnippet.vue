@@ -5,7 +5,9 @@
         
      <div class="form">
         <label for="title">Title</label>
-        <input type="text" id="title" placeholder="Title" v-model="newSnippet.title">
+        <input type="text" id="title" placeholder="Title" v-model="newSnippet.title" :class="titleClass"
+			@blur.once="titleIsTouched = true"/>
+            <span v-if="titleIsTouched && !titleIsValid" class="error"> {{ titleErrorMessage }} </span>
         
         <label for="snippet">Snippet</label>
         <textarea rows="20" placeholder="Ny snippet här" id="snippet" v-model="newSnippet.content"></textarea>
@@ -26,7 +28,10 @@ export default {
 
     data:()=>({
        newSnippet:{id:null, title:"", content:""},
-       baseUrl:"https://www.forverkliga.se/JavaScript/api/api-snippets.php"
+       baseUrl:"https://www.forverkliga.se/JavaScript/api/api-snippets.php",
+       titleIsTouched: false,
+       
+
         
     }),
     methods:{
@@ -34,15 +39,54 @@ export default {
            
             let NewTitle=this.newSnippet.title
             let NewContent=this.newSnippet.content
-     
-            axios.post(this.baseUrl+"?add&title="+NewTitle+"&content="+NewContent)
             
-        }
+            // skickar till api
+           axios.post(this.baseUrl+"?add&title="+NewTitle+"&content="+NewContent).then((Response)=>{
+
+                console.log("Response: ",Response);
+                console.log("Response: ",Response.data);
+                console.log("config:", Response.config);
+                this.newSnippet=Response.data
+            
+            })
+
+            //tömmer inputfälten
+            this.newSnippet.title="";
+            this.newSnippet.content=""
+
+            console.log("URL: ",this.baseUrl+"?add&title="+NewTitle+"&content="+NewContent);
+
+            //    axios.post("https://www.forverkliga.se/JavaScript/api/api-snippets.php?add&title=Example&content=let x=1;").then((Response)=>{
+
+            //     console.log("Response: ",Response);
+            //     console.log("Response: ",Response.data);
+            //     console.log("config:", Response.config);
+            //     this.newSnippet=Response.data
+            
+            // })
+            
+        }//slut addNewSnippet
+
+    },//slut methods
+    computed:{
+        titleIsValid() {
+			return this.newSnippet.title.length >= 1;
+			
+		},
+		titleClass() {
+			if( !this.titleIsTouched ) return '';
+			return this.titleIsValid ? 'valid' : 'invalid';
+		},
+		titleErrorMessage() {
+			return 'Your title needs to contain at least 1 character'
+		},
+
 
     }
 
+     
 
-}
+}//slut export default
 </script>
 <style scoped>
 
@@ -75,6 +119,12 @@ export default {
     margin:0.5em 0em 0.4em 0.8em;
     color:rgb(133, 111, 136);
    
+}
+input.valid { border-color: green; }
+input.invalid { border-color: red; }
+.error {
+	color: red;
+	font-size: 90%;
 }
 
 </style>
