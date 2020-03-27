@@ -10,8 +10,6 @@
         <li @click="handleDisplayAddSnippet">Lägg till snippet</li>
       </ul>
 
-     
-  
     </div>
     
 

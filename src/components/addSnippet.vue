@@ -21,15 +21,21 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
 
     data:()=>({
        newSnippet:{id:null, title:"", content:""},
+       baseUrl:"https://www.forverkliga.se/JavaScript/api/api-snippets.php"
         
     }),
     methods:{
         addNewSnippet(){
-            console.log("Klick i addsnippet");
+           
+            let NewTitle=this.newSnippet.title
+            let NewContent=this.newSnippet.content
+     
+            axios.post(this.baseUrl+"?add&title="+NewTitle+"&content="+NewContent)
             
         }
 
