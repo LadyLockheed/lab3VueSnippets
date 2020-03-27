@@ -3,13 +3,19 @@
 
     <div class="snippets">
         
+        <h2 v-if="snippetsList=='Loading...'">{{snippetsList}}</h2>
+
+        <template v-if="snippetsList!='Loading...'">
+            
             <div v-for="snippet in snippetsList" :key="snippet.id" class="list">
-               <h3>{{snippet.title}}</h3>
-               <p>{{snippet.content}}</p>
-               <p>{{snippet.id}}</p>
-               <button @click="saveId(snippet.id)">Knapp</button>
+                    <h3>{{snippet.title}}</h3>
+                    <p>{{snippet.content}}</p>
+                    <p>{{snippet.id}}</p>
+                    <button @click="saveId(snippet.id)">Knapp</button>
             </div>
-        
+    
+        </template>
+                
         
     </div>
 
@@ -22,20 +28,8 @@ export default {
 
     data:()=>({
     baseUrl:"https://www.forverkliga.se/JavaScript/api/api-snippets.php",
-    snippetsList:[],
-        snippets:[
-            {id: 1, titel: "For-loop", snippet:"for (i=0)"},
-            {id: 2, titel: "If-sats", snippet:"if (villkor)"},
-            {id: 3, titel: "Border", snippet:"1px solid green"},
-            {id: 4, titel: "Grid", snippet:"display:grid"},
-            {id: 5, titel: "Flex", snippet:"display:flex"},
-            {id: 6, titel: "Block", snippet:"display:block"},
-            {id: 7, titel: "Inline-block", snippet:"display:inline-block"},
-            {id: 8, titel: "Data i vue", snippet:"data:()=>({})"},
-            {id: 9, titel: "Methods", snippet:"methods:{}"},
-            {id: 10, titel: "Computed", snippet:"computed:{}"},
-            
-        ]
+    snippetsList:"Loading...",
+ 
     }),//slut data
     methods:{
 
@@ -47,7 +41,7 @@ export default {
         
     },//slut methods
     created: function (){
-
+       
         axios.get(this.baseUrl+"?latest").then((Response)=>{
         
         console.log("Hämtat från api: ", Response);
@@ -65,8 +59,8 @@ export default {
 <style scoped>
 
 .snippets{
-color:#FAD9FF;
-
+color:rgb(96, 56, 102);
+;
 
 }
 .list{

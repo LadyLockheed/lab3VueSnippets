@@ -1,8 +1,12 @@
 <template>
   <div id="app">
+
+    
  
   
     <Header @showSnippets="onSnippetClick" @showAddSnippet="onAddSnippetClick"/>
+
+    <Home v-if="!displaySnippets && !displayAddSnippets"/>
  
     <template v-if="displaySnippets==true">
       <Snippets/>
@@ -11,6 +15,8 @@
     <template v-if="displayAddSnippets==true">
       <addSnippet/>
     </template>
+
+    <!-- <Footer/> -->
   
   </div>
 </template>
@@ -20,6 +26,8 @@
 import Header from './components/Header.vue'
 import addSnippet from './components/addSnippet.vue'
 import Snippets from './components/Snippets.vue'
+// import Footer from './components/Footer.vue'
+import Home from './components/Home.vue'
 
 export default {
   name: 'App',
@@ -28,6 +36,8 @@ export default {
     Header,
     addSnippet,
     Snippets,
+    // Footer,
+    Home
   },
 
   data:()=>({

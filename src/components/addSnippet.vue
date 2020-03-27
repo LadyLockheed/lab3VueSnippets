@@ -10,9 +10,10 @@
         <label for="snippet">Snippet</label>
         <textarea rows="20" placeholder="Ny snippet här" id="snippet" v-model="newSnippet.content"></textarea>
         Listan: {{newSnippet}}
+        <button @click="addNewSnippet">Save snippet</button>
      </div>
      
-        <button></button>
+        
 
     </div>
 
@@ -26,6 +27,13 @@ export default {
        newSnippet:{id:null, title:"", content:""},
         
     }),
+    methods:{
+        addNewSnippet(){
+            console.log("Klick i addsnippet");
+            
+        }
+
+    }
 
 
 }
@@ -37,24 +45,16 @@ export default {
 }
 .form{
     display:grid;
-    /* grid-template-columns: 1fr */
     border: 1px solid gray;
 	border-radius: 1em;
     padding:1em;
     margin:1em;
-    /* grid-template-columns: repeat(10, 5em);
-    grid-template-rows: auto; */
-
 
 }
 .form>input{
     margin:0em 1em 0.3em 1em;
     padding:0.5em;
     border-radius:0.3em;
-    /* display:block; */
-    /* max-width:300px; */
-    /* width:40em; */
-    
     border:3px solid lightblue;
   
 }
@@ -70,6 +70,5 @@ export default {
     color:rgb(133, 111, 136);
    
 }
-
 
 </style>

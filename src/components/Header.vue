@@ -1,7 +1,7 @@
 <template>
  
   <div class="header">
-    <img src="../assets/Logga.svg" alt="logo">
+    <img src="../assets/Logga.svg" alt="logo" @click="handleDisplayHome">
     
     <div class="navBar">
  
@@ -32,6 +32,7 @@ export default {
     handleDisplaySnippets(){
  
       let displaySnippets=true;
+      
       this.$emit("showSnippets", displaySnippets) // skickar till app
 
     },
@@ -39,6 +40,10 @@ export default {
   
       let displayAddSnippet=true;
       this.$emit("showAddSnippet", displayAddSnippet)
+
+    },
+    handleDisplayHome(){
+
 
     }
  
