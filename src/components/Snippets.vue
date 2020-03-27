@@ -3,12 +3,13 @@
 
     <div class="snippets">
         
-            <div v-for="snippet in snippets" :key="snippet.id" class="list">
-               <h3>{{snippet.titel}}</h3>
-               <p>{{snippet.snippet}}</p>
+            <div v-for="snippet in snippetsList" :key="snippet.id" class="list">
+               <h3>{{snippet.title}}</h3>
+               <p>{{snippet.content}}</p>
                <p>{{snippet.id}}</p>
                <button @click="saveId(snippet.id)">Knapp</button>
             </div>
+        
         
     </div>
 
@@ -16,10 +17,12 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
 
     data:()=>({
-
+    baseUrl:"https://www.forverkliga.se/JavaScript/api/api-snippets.php",
+    snippetsList:[],
         snippets:[
             {id: 1, titel: "For-loop", snippet:"for (i=0)"},
             {id: 2, titel: "If-sats", snippet:"if (villkor)"},
@@ -33,30 +36,42 @@ export default {
             {id: 10, titel: "Computed", snippet:"computed:{}"},
             
         ]
-    }),
+    }),//slut data
     methods:{
 
         saveId(snippetId){
             console.log("Sparat id är: ",snippetId);
             
-        }
-    },
+        },
+  
+        
+    },//slut methods
     created: function (){
 
-        console.log("I created i snippet");
+        axios.get(this.baseUrl+"?latest").then((Response)=>{
         
-    }
+        console.log("Hämtat från api: ", Response);
+        console.log("Hämtat från api, data:", Response.data);
+        
+        this.snippetsList=Response.data;
+  
+    })//slut api get latest
 
-}
+    }//slut created
+}//slut export default
+
+
 </script>
 <style scoped>
 
 .snippets{
 color:#FAD9FF;
 
+
 }
 .list{
-    border:2px solid lightcoral;
+    border:2px solid #FAD9FF;
+    border-radius:0.3em;
     margin:1em;
     padding:0.5em;
 }

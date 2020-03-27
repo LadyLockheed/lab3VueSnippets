@@ -4,9 +4,9 @@
   
     <Header @showSnippets="onSnippetClick" @showAddSnippet="onAddSnippetClick"/>
  
-    <!-- <template v-if="displaySnippets==true"> -->
+    <template v-if="displaySnippets==true">
       <Snippets/>
-    <!-- </template> -->
+    </template>
     
     <template v-if="displayAddSnippets==true">
       <addSnippet/>
@@ -65,7 +65,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background-color:#595959;
+  
   /* height:100vh; */
 }
 *{

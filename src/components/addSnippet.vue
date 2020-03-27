@@ -4,14 +4,15 @@
     <div class="addSnippet">
         
      <div class="form">
-        <label for="titel">Titel</label>
-        <input type="text" id="titel" placeholder="Titel">
+        <label for="title">Title</label>
+        <input type="text" id="title" placeholder="Title" v-model="newSnippet.title">
         
         <label for="snippet">Snippet</label>
-        <textarea rows="20" placeholder="Ny snippet här" id="snippet" ></textarea>
+        <textarea rows="20" placeholder="Ny snippet här" id="snippet" v-model="newSnippet.content"></textarea>
+        Listan: {{newSnippet}}
      </div>
      
-
+        <button></button>
 
     </div>
 
@@ -22,9 +23,10 @@
 export default {
 
     data:()=>({
-       
+       newSnippet:{id:null, title:"", content:""},
         
-    })
+    }),
+
 
 }
 </script>
@@ -65,7 +67,7 @@ export default {
 }
 .form>label{
     margin:0.5em 0em 0.4em 0.8em;
-    color:#FAD9FF;
+    color:rgb(133, 111, 136);
    
 }
 

@@ -10,7 +10,7 @@
         <li @click="handleDisplayAddSnippet">Lägg till snippet</li>
       </ul>
 
-      <button>X</button>
+     
   
     </div>
     
@@ -54,6 +54,7 @@ export default {
   flex-direction:row;
   padding:1em;
   justify-content:space-between;
+  background-color:#595959
 
 
 }
@@ -87,11 +88,6 @@ li {
   margin: 1em 1em 0 1em;
   
 }
-button{
-  /* background-color:green; */
-  border:none;
-  border-radius:0.3em;
-  color:lightseagreen
-}
+
 
 </style>
