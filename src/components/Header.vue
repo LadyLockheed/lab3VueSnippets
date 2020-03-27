@@ -9,6 +9,8 @@
         <li @click="handleDisplaySnippets">Snippets</li>
         <li @click="handleDisplayAddSnippet">Lägg till snippet</li>
       </ul>
+
+      <button>X</button>
   
     </div>
     
@@ -23,19 +25,23 @@ export default {
 
   data:()=>({
     
-    displaySnippets:"",
-    displayAddSnippet:""
+   
         
   }),
   methods:{
     handleDisplaySnippets(){
-      console.log("klick funkar");
-   
+ 
+      let displaySnippets=true;
+      this.$emit("showSnippets", displaySnippets) // skickar till app
+
     },
     handleDisplayAddSnippet(){
-      console.log("klick 2 funkar");
-      
+  
+      let displayAddSnippet=true;
+      this.$emit("showAddSnippet", displayAddSnippet)
+
     }
+ 
   }
 
 }
@@ -46,8 +52,9 @@ export default {
 .header{
   display:flex;
   flex-direction:row;
-  padding:0.5em;
+  padding:1em;
   justify-content:space-between;
+
 
 }
 .navBar{
@@ -56,8 +63,13 @@ export default {
   margin-left:0.5em;
   color: #FAD9FF;
   font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  font-size:1em;
+  font-size:1.2em;
+  font-weight: bold;
+  padding-bottom:1em;
  
+}
+img{
+  margin-left:1em;
 }
 li:hover{
     border-bottom:4px solid #FAD9FF;
@@ -72,8 +84,14 @@ ul {
 }
 li {
   display: inline-block;
-  margin: 0 10px;
+  margin: 1em 1em 0 1em;
   
+}
+button{
+  /* background-color:green; */
+  border:none;
+  border-radius:0.3em;
+  color:lightseagreen
 }
 
 </style>

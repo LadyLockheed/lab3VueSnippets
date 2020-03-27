@@ -1,9 +1,17 @@
 <template>
   <div id="app">
+ 
   
-    <Header/>
-    <addSnippet/>
-    <Snippets/>
+    <Header @showSnippets="onSnippetClick" @showAddSnippet="onAddSnippetClick"/>
+ 
+    <template v-if="displaySnippets==true">
+      <Snippets/>
+    </template>
+    
+    <template v-if="displayAddSnippets==true">
+      <addSnippet/>
+    </template>
+  
   </div>
 </template>
 
@@ -20,7 +28,39 @@ export default {
     Header,
     addSnippet,
     Snippets,
-  }
+  },
+
+  data:()=>({
+    
+    displaySnippets:"",
+    displayAddSnippets:"",
+    // test:1
+  }),
+  methods:{
+
+    onSnippetClick(value){
+  
+      this.displaySnippets=value;
+      this.displayAddSnippets=false;
+      
+    },
+    onAddSnippetClick(value){
+  
+      this.displayAddSnippets=value;
+      this.displaySnippets=false;
+    }
+    
+
+  },
+  //! Är detta som ngoninit?
+//   created: function() {
+//     let number=2;
+//    number+=this.test
+//       console.log(`i created`);
+//       console.log("Number är: ", number);
+      
+//  }
+
 }
 </script>
 
@@ -29,13 +69,15 @@ export default {
   box-sizing:border-box;
   padding: 0;
   margin: 0;
-  
-  /* font-family: Avenir, Helvetica, Arial, sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  
-  /* color: #2c3e50; */
-  
-  background-color:#595959
+
+  background-color:#595959;
+  /* height:100vh; */
+}
+*{
+   box-sizing:border-box;
+  padding: 0;
+  margin: 0;
 }
 </style>
