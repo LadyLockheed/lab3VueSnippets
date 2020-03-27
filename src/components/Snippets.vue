@@ -40,6 +40,11 @@ export default {
             console.log("Sparat id är: ",snippetId);
             
         }
+    },
+    created: function (){
+
+        console.log("I created i snippet");
+        
     }
 
 }

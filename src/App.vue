@@ -4,9 +4,9 @@
   
     <Header @showSnippets="onSnippetClick" @showAddSnippet="onAddSnippetClick"/>
  
-    <template v-if="displaySnippets==true">
+    <!-- <template v-if="displaySnippets==true"> -->
       <Snippets/>
-    </template>
+    <!-- </template> -->
     
     <template v-if="displayAddSnippets==true">
       <addSnippet/>
@@ -34,7 +34,7 @@ export default {
     
     displaySnippets:"",
     displayAddSnippets:"",
-    // test:1
+ 
   }),
   methods:{
 
@@ -52,14 +52,7 @@ export default {
     
 
   },
-  //! Är detta som ngoninit?
-//   created: function() {
-//     let number=2;
-//    number+=this.test
-//       console.log(`i created`);
-//       console.log("Number är: ", number);
-      
-//  }
+
 
 }
 </script>
