@@ -39,31 +39,74 @@ export default {
            
             let NewTitle=this.newSnippet.title
             let NewContent=this.newSnippet.content
-            
-            // skickar till api
-           axios.post(this.baseUrl+"?add&title="+NewTitle+"&content="+NewContent).then((Response)=>{
+                
+                // skickar till api
+            //    axios.post(this.baseUrl+"?add&title="+NewTitle+"&content="+NewContent).then((Response)=>{
 
-                console.log("Response: ",Response);
-                console.log("Response: ",Response.data);
-                console.log("config:", Response.config);
-                this.newSnippet=Response.data
-            
-            })
+            //         let test=Response
+            //         console.log("Response: ",Response);
+            //         console.log("Response: ",Response.data);
+            //         console.log("config:", Response.config);
+            //         this.newSnippet=Response.data
+                
+            //     })
 
             //tömmer inputfälten
-            this.newSnippet.title="";
-            this.newSnippet.content=""
+            //TODO Title fältet blir felvaliderat när man skickat och den tömt fältet. 
+            // this.newSnippet.title="";
+            // this.newSnippet.content=""
 
-            console.log("URL: ",this.baseUrl+"?add&title="+NewTitle+"&content="+NewContent);
-
-            //    axios.post("https://www.forverkliga.se/JavaScript/api/api-snippets.php?add&title=Example&content=let x=1;").then((Response)=>{
-
-            //     console.log("Response: ",Response);
-            //     console.log("Response: ",Response.data);
-            //     console.log("config:", Response.config);
-            //     this.newSnippet=Response.data
             
-            // })
+
+
+            //=================
+
+           fetch(this.baseUrl+"?add&title="+NewTitle+"&content="+NewContent, {
+                    method: 'POST',
+                })
+                .then(response => response.json())
+                .then((data) => {
+                    
+                    let snippets = data;
+                    console.log("Från api: ", data);
+                    
+                })
+                .catch((error) => {
+                   
+                    console.log("Error: ",error);
+                 
+                })
+
+
+
+                // entireFormIsValid(){
+                // if(this.titleIsValid && this.contentIsValid){
+                //     fetch('https://www.forverkliga.se/JavaScript/api/api-snippets.php?add&title=' + this.model.formTitle + '&content=' + this.model.formContent , {
+                //         method: 'POST'
+                //     })
+                //     .then((response) => {
+                //         this.$emit('newSnippet', response)
+                //     })
+                //     .catch((error) => {
+                //         this.errorMsg = 'Failed to add snippet, please try again';
+                //         this.error = true;
+                //         console.log(error);
+                //     })
+                // }
+                // else{
+                //     this.errorMsg = 'Enter the form properly';
+                //     this.error = true;
+                // }
+            }
+            
+        
+                
+
+           
+            
+             
+                
+          
             
         }//slut addNewSnippet
 

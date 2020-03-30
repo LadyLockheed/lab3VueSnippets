@@ -1,6 +1,6 @@
 <template>
 
-    <div class="footer">{{myFooter}}</div>
+    <div class="footer"></div>
 
 </template>
 
@@ -8,7 +8,7 @@
 export default {
     data:()=>({
 
-        myFooter:"Min footer"
+       
     })
 
 }
@@ -17,8 +17,11 @@ export default {
 <style scoped>
 .footer{
 
-    height:3em;
-    background-color:pink;
+    background-color:#63948c;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 2.5rem;
 
 }
 

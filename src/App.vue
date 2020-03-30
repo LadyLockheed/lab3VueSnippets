@@ -2,21 +2,25 @@
   <div id="app">
 
     
- 
-  
+ <div class="contentWrap">
     <Header @showSnippets="onSnippetClick" @showAddSnippet="onAddSnippetClick" @showHome="onHomeClick"/>
 
     <Home v-if="!displaySnippets && !displayAddSnippets"/>
  
-    <template v-if="displaySnippets==true">
+    <!-- <template v-if="displaySnippets==true"> -->
       <Snippets/>
-    </template>
+    <!-- </template> -->
     
     <template v-if="displayAddSnippets==true">
       <addSnippet/>
     </template>
 
-    <!-- <Footer/> -->
+
+ </div>
+  
+    
+
+    <Footer/>
   
   </div>
 </template>
@@ -26,7 +30,7 @@
 import Header from './components/Header.vue'
 import addSnippet from './components/addSnippet.vue'
 import Snippets from './components/Snippets.vue'
-// import Footer from './components/Footer.vue'
+import Footer from './components/Footer.vue'
 import Home from './components/Home.vue'
 
 export default {
@@ -36,7 +40,7 @@ export default {
     Header,
     addSnippet,
     Snippets,
-    // Footer,
+    Footer,
     Home
   },
 
@@ -74,18 +78,20 @@ export default {
 
 <style>
 #app {
+
+  position: relative;
+  min-height: 100vh;
+  background-color:#ebe6d1;
+
+}
+.contentWrap{
+   padding-bottom: 2.5rem;
+   
+}
+*{
   box-sizing:border-box;
   padding: 0;
   margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  
-  /* height:100vh; */
-}
-*{
-   box-sizing:border-box;
-  padding: 0;
-  margin: 0;
+ 
 }
 </style>

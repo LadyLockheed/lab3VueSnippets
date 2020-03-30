@@ -1,7 +1,7 @@
 <template>
  
   <div class="header">
-    <img src="../assets/Logga.svg" alt="logo" @click="handleDisplayHome">
+    <img src="../assets/Logga_montserrat.svg" alt="logo" @click="handleDisplayHome">
     
     <div class="navBar">
  
@@ -59,7 +59,7 @@ export default {
   flex-direction:row;
   padding:1em;
   justify-content:space-between;
-  background-color:#595959
+  background-color:#63948c;
 
 
 }
@@ -67,10 +67,12 @@ export default {
 
   margin-top:0.3em;
   margin-left:0.5em;
-  color: #FAD9FF;
-  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  color:white;
   font-size:1.2em;
-  font-weight: bold;
+  font-family: Helvetica, monospace;
+	letter-spacing: 0.5px;	
+	text-transform: uppercase;
+
   
  
 }
@@ -79,7 +81,7 @@ img{
 }
 li:hover{
   
-    border-bottom:3px solid #FAD9FF;
+    border-bottom:3px solid white;
 
 }
 .active{
