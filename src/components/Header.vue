@@ -93,8 +93,8 @@ ul {
 }
 li {
   display: inline-block;
-  margin: 1em 1em 0em 1em;
-  padding-bottom:0.5em;
+  margin: 0em 1em 0;
+  /* padding-bottom:0.5em; */
   
   
 }

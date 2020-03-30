@@ -7,9 +7,9 @@
 
     <Home v-if="!displaySnippets && !displayAddSnippets"/>
  
-    <!-- <template v-if="displaySnippets==true"> -->
+    <template v-if="displaySnippets==true">
       <Snippets/>
-    <!-- </template> -->
+    </template>
     
     <template v-if="displayAddSnippets==true">
       <addSnippet/>

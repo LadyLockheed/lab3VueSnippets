@@ -86,10 +86,14 @@ export default {
     background-color:#ebe6d1;
    
 }
+h2{
+    color:#2e303f
+}
 
 .snippets{
 color:white;
 font-family: Helvetica, monospace;
+
 }
 .listContainer{
     
@@ -110,6 +114,7 @@ font-family: Helvetica, monospace;
 	text-transform: uppercase;
     font-weight:bold;
     padding:0.7em;
+    margin-top:2em;
 
 }
 .selectButtonsContainer :first-child {

@@ -5,9 +5,14 @@
         
      <div class="form">
         <label for="title">Title</label>
-        <input type="text" id="title" placeholder="Title" v-model="newSnippet.title" :class="titleClass"
+        <!-- <input type="text" id="title" placeholder="Title" v-model="newSnippet.title" :class="titleClass"
 			@blur.once="titleIsTouched = true"/>
-            <span v-if="titleIsTouched && !titleIsValid" class="error"> {{ titleErrorMessage }} </span>
+            <span v-if="titleIsTouched && !titleIsValid" class="error"> {{ titleErrorMessage }} </span> -->
+
+            <input type="text" id="title" placeholder="Title" v-model="newSnippet.title" 
+			@blur.once="titleIsTouched = true"/>
+        
+        
         
         <label for="snippet">Snippet</label>
         <textarea rows="20" placeholder="Ny snippet här" id="snippet" v-model="newSnippet.content"></textarea>
@@ -30,6 +35,7 @@ export default {
        newSnippet:{id:null, title:"", content:""},
        baseUrl:"https://www.forverkliga.se/JavaScript/api/api-snippets.php",
        titleIsTouched: false,
+       failToUploadmsg:""
        
 
         
@@ -40,7 +46,8 @@ export default {
             let NewTitle=this.newSnippet.title
             let NewContent=this.newSnippet.content
                 
-                // skickar till api
+                // skickar till api 
+                //!Min gamla kod med axios, utan body och tags
             //    axios.post(this.baseUrl+"?add&title="+NewTitle+"&content="+NewContent).then((Response)=>{
 
             //         let test=Response
@@ -50,6 +57,28 @@ export default {
             //         this.newSnippet=Response.data
                 
             //     })
+            //     .catch ((error)=> {
+            //         console.log("Error: ", error);
+            //         this.failToUploadmsg="Lyckades inte ladda upp";
+                    
+                    
+            //     })
+            //!SLut min gamla kod med axios utan body och tag
+            //! Test ny kod från Jonas, med fetch
+              fetch (this.baseUrl,
+              {
+                  method:"POST",
+                  body: new URLSearchParams("?add&title="+NewTitle+"&content="+NewContent+"&tags=tagUrIt"),
+              
+              })
+              .then((response)=>{
+                  console.log("Response från api: ", response);
+                  
+              })
+              .catch((error)=>{
+                console.log("Error please try again: ", error);
+
+              })
 
             //tömmer inputfälten
             //TODO Title fältet blir felvaliderat när man skickat och den tömt fältet. 
@@ -60,44 +89,40 @@ export default {
 
 
             //=================
-
-           fetch(this.baseUrl+"?add&title="+NewTitle+"&content="+NewContent, {
-                    method: 'POST',
-                })
-                .then(response => response.json())
-                .then((data) => {
-                    
-                    let snippets = data;
-                    console.log("Från api: ", data);
-                    
-                })
-                .catch((error) => {
-                   
-                    console.log("Error: ",error);
-                 
-                })
-
-
-
-                // entireFormIsValid(){
-                // if(this.titleIsValid && this.contentIsValid){
-                //     fetch('https://www.forverkliga.se/JavaScript/api/api-snippets.php?add&title=' + this.model.formTitle + '&content=' + this.model.formContent , {
-                //         method: 'POST'
+            //!Jonas kod med fetch som funkar att posta. HAr med body och tags
+                // fetch('https://www.forverkliga.se/JavaScript/api/api-snippets.php', {
+                //         method: 'POST',
+                //         body: new URLSearchParams('add&title=' + this.model.formTitle + '&content=' + this.model.formContent + '&tags=tag1'),
                 //     })
                 //     .then((response) => {
+                //         this.waitingForApi(false),
                 //         this.$emit('newSnippet', response)
                 //     })
-                //     .catch((error) => {
-                //         this.errorMsg = 'Failed to add snippet, please try again';
-                //         this.error = true;
-                //         console.log(error);
-                //     })
-                // }
-                // else{
-                //     this.errorMsg = 'Enter the form properly';
-                //     this.error = true;
-                // }
-            }
+
+
+
+
+
+        //    fetch(this.baseUrl+"?add&title="+NewTitle+"&content="+NewContent, {
+        //             method: 'POST',
+                    
+        //         })
+        //         .then(response => response.json())
+        //         .then((data) => {
+                    
+        //             let snippets = data;
+        //             console.log("Från api: ", data);
+                    
+        //         })
+        //         .catch((error) => {
+                   
+        //             console.log("Error: ",error);
+                 
+        //         })
+
+
+
+        
             
         
                 
@@ -112,17 +137,17 @@ export default {
 
     },//slut methods
     computed:{
-        titleIsValid() {
-			return this.newSnippet.title.length >= 1;
+        // titleIsValid() {
+		// 	return this.newSnippet.title.length >= 1;
 			
-		},
-		titleClass() {
-			if( !this.titleIsTouched ) return '';
-			return this.titleIsValid ? 'valid' : 'invalid';
-		},
-		titleErrorMessage() {
-			return 'Your title needs to contain at least 1 character'
-		},
+		// },
+		// titleClass() {
+		// 	if( !this.titleIsTouched ) return '';
+		// 	return this.titleIsValid ? 'valid' : 'invalid';
+		// },
+		// titleErrorMessage() {
+		// 	return 'Your title needs to contain at least 1 character'
+		// },
 
 
     }
@@ -134,6 +159,7 @@ export default {
 <style scoped>
 
 .addSnippet{
+   
    
 }
 .form{
