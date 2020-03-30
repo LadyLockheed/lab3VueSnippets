@@ -8,9 +8,21 @@
         <div v-if="snippetsList!='Loading...'" class=snippetsContainer>
 
             <div class="selectButtonsContainer">
-                <button @click="getLatestSnippets" class="selectButton">Latest</button>
+                <!-- <button @click="getLatestSnippets" class="selectButton">Latest</button> -->
+                <button @click="getSnippets('?latest')" class="selectButton">Latest</button>
                 <button class="selectButton">Popular</button>
-                <button class="selectButton">Reported</button>
+                <button @click="getSnippets('?reported')" class="selectButton" >Reported</button>
+
+            </div>
+            <div class="reportedList" v-if="displayReportedList">
+                <div v-for="reportedSnippet in reportedSnippetsList" :key="reportedSnippet.id">
+                    <h3>{{reportedSnippet.title}}</h3>
+                    <p>{{reportedSnippet.content}}</p>
+                    <p>Is reported: {{reportedSnippet.is_reported}}</p>
+
+                </div>
+
+
 
             </div>
             <div class="listContainer">
@@ -19,9 +31,20 @@
                
                     <h3>{{snippet.title}}</h3>
                     <p>{{snippet.content}}</p>
-                    <p>{{snippet.id}}</p>
-                    <button @click="saveId(snippet.id)" class="idButton">Knapp</button>
-            </div>
+                    <p>Score: {{snippet.score}}</p>
+                   
+                    
+                    
+                    <div class="buttons">
+                    
+                        <button @click="saveId(snippet.id)" class="idButton">Knapp</button>
+                        <button @click="postSnippet(snippet.id,'?report&id=' )">Report snippet</button>
+                        <button @click="postSnippet(snippet.id, '?upvote&id=')">Upvote</button>
+                        <button @click="postSnippet(snippet.id, '?downvote&id=')">Downvote</button>
+
+                    </div>
+              
+                </div>
             </div>
       
         </div>
@@ -38,6 +61,10 @@ export default {
 
     baseUrl:"https://www.forverkliga.se/JavaScript/api/api-snippets.php",
     snippetsList:"Loading...",
+    displayReportedList:false,
+    reportedSnippetsList:"Loading...",
+   
+   
  
     }),//slut data
     methods:{
@@ -46,36 +73,80 @@ export default {
             console.log("Sparat id är: ",snippetId);
             
         },
-        getLatestSnippets(){
-            console.log("Getlastest snippets klick funkar");
+        getSnippets(choice){
+
+            console.log("i getsnippets, choise är: ",choice);
             
-            axios.get(this.baseUrl+"?latest").then((Response)=>{
+            axios.get(this.baseUrl+choice).then((response)=>{
         
-            console.log("Hämtat från api: ", Response);
-            console.log("Hämtat från api, data:", Response.data);
+            console.log("Hämtat från api: ", response);
+
         
-            this.snippetsList=Response.data;
-  
+            if(choice=='?latest'){
+                console.log("I ifsats latest");
+                
+                this.snippetsList=response.data;
+            }
+            else if(choice=='?reported'){
+                console.log("I ifsats reported");
+                this.displayReportedList=true
+                
+                this.reportedSnippetsList=response.data;
+    
+            }
+           
+            
             })//slut api get latest
 
-        }//slut funktion getLatestSnippets
-  
-        
+            
+        },//slut funktion getSnippets
+        postSnippet(snippetId, choice){
+
+               fetch (this.baseUrl,
+            {
+                method:"POST",
+                body:new URLSearchParams(choice+snippetId),
+               
+            })
+            .then((response)=>{
+                console.log("PostSnippet: ", response);
+                
+            })
+            .catch((error)=>{
+                console.log("Error i postsnippet ", error);
+                
+            })
+
+            this.getSnippets('?latest')
+
+
+        },
+     
+        // reportSnippet(snippetId){
+            
+        //     fetch (this.baseUrl,
+        //     {
+        //         method:"POST",
+        //         body:new URLSearchParams("?report&id="+snippetId),
+        //     })
+        //     .then((response)=>{
+        //         console.log("Response från api report: ", response);
+                
+        //     })
+        //     .catch((error)=>{
+        //         console.log("Error i report: ", error);
+                
+        //     })
+        //     this.getLatestSnippets()
+
+        // },
+ 
+    
     },//slut methods
     created: function (){
-       
-        axios.get(this.baseUrl+"?latest").then((Response)=>{
-        
-        console.log("Hämtat från api: ", Response);
-        console.log("Hämtat från api, data:", Response.data);
-        
-        this.snippetsList=Response.data;
-       
-        
-  
-    })//slut api get latest
-
+       this.getSnippets('?latest')
     }//slut created
+
 }//slut export default
 
 
@@ -87,7 +158,7 @@ export default {
    
 }
 h2{
-    color:#2e303f
+    color:#2e303f;
 }
 
 .snippets{

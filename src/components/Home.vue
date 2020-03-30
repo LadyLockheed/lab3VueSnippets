@@ -4,7 +4,8 @@
 
     <h1>Kådning...de ä gött dä...</h1>
    
-    
+    <!-- <h1>Kådning...</h1>
+    <h2>de ä gött dä...</h2> -->
 
 
 </div>
@@ -74,8 +75,8 @@ h1{
         opacity: 1; 
     } 
 
-}
-     */
+} */
+    
 
 
 </style>

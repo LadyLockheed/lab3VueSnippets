@@ -4,11 +4,14 @@
     <img src="../assets/Logga_montserrat.svg" alt="logo" @click="handleDisplayHome">
     
     <div class="navBar">
- 
+    <!--  
       <ul>
         <li @click="handleDisplaySnippets">Snippets</li>
         <li @click="handleDisplayAddSnippet">Lägg till snippet</li>
-      </ul>
+        
+      </ul> -->
+      <button @click="handleDisplaySnippets">Snippets</button>
+      <button @click="handleDisplayAddSnippet">Lägg till snippets</button>
 
     </div>
     
@@ -60,44 +63,26 @@ export default {
   padding:1em;
   justify-content:space-between;
   background-color:#63948c;
-
-
 }
-.navBar{
 
-  margin-top:0.3em;
-  margin-left:0.5em;
-  color:white;
-  font-size:1.2em;
-  font-family: Helvetica, monospace;
-	letter-spacing: 0.5px;	
-	text-transform: uppercase;
-
-  
- 
-}
 img{
   margin-left:1em;
 }
-li:hover{
-  
-    border-bottom:3px solid white;
-
-}
-.active{
-    border-bottom:4px solid #FAD9FF;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
+button{
   margin: 0em 1em 0;
-  /* padding-bottom:0.5em; */
-  
-  
+  color:white;
+  background-color:#63948c;
+  border:none;
+  font-size:1em;
+  font-family: Helvetica, monospace;
+  letter-spacing: 0.5px;	
+	text-transform: uppercase;
+  margin-top:0.6em;
 }
-
+button:hover, button:focus, button.selected{
+  border-bottom:3px solid #c24332;
+  cursor: pointer;
+  outline:0;
+}
 
 </style>
