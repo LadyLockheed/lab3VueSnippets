@@ -2,42 +2,40 @@
     
 
     <div class="snippets">
+        <!--TODO ändra namn på denna template -->
+        <h1>{{Welcome}}</h1>
+        <p>Displayreported: {{displayReported}}</p>
         
         <h2 v-if="snippetsList=='Loading...'">{{snippetsList}}</h2>
 
         <div v-if="snippetsList!='Loading...'" class=snippetsContainer>
 
             <div class="selectButtonsContainer">
-                <!-- <button @click="getLatestSnippets" class="selectButton">Latest</button> -->
+                
                 <button @click="getSnippets('?latest')" class="selectButton">Latest</button>
-                <button class="selectButton">Popular</button>
+                <button @click="getSnippets()" class="selectButton">Popular</button>
                 <button @click="getSnippets('?reported')" class="selectButton" >Reported</button>
 
             </div>
-            <div class="reportedList" v-if="displayReportedList">
-                <div v-for="reportedSnippet in reportedSnippetsList" :key="reportedSnippet.id">
-                    <h3>{{reportedSnippet.title}}</h3>
-                    <p>{{reportedSnippet.content}}</p>
-                    <p>Is reported: {{reportedSnippet.is_reported}}</p>
+      
 
-                </div>
-
-
-
-            </div>
+            
             <div class="listContainer">
 
-                <div v-for="snippet in snippetsList" :key="snippet.id" class="list">
+
+                <div v-for="snippet in snippetsList" :key="snippet.id" class="list">   
                
                     <h3>{{snippet.title}}</h3>
                     <p>{{snippet.content}}</p>
                     <p>Score: {{snippet.score}}</p>
+                    <!-- <div v-if="displayReported">Rapporterad: {{snippet.is_reported}}</div> -->
+                    <p>Rapporterad: {{snippet.is_reported}}</p>
                    
                     
                     
-                    <div class="buttons">
+                    <div class="buttons" v-if="displayLatestSnippets">
                     
-                        <button @click="saveId(snippet.id)" class="idButton">Knapp</button>
+                        
                         <button @click="postSnippet(snippet.id,'?report&id=' )">Report snippet</button>
                         <button @click="postSnippet(snippet.id, '?upvote&id=')">Upvote</button>
                         <button @click="postSnippet(snippet.id, '?downvote&id=')">Downvote</button>
@@ -58,21 +56,19 @@ import axios from 'axios'
 export default {
 
     data:()=>({
-
+    Welcome:"Senaste snippets",
     baseUrl:"https://www.forverkliga.se/JavaScript/api/api-snippets.php",
     snippetsList:"Loading...",
-    displayReportedList:false,
-    reportedSnippetsList:"Loading...",
+    testNewList:"",
+    displayReported:false,
+    // reportedSnippetsList:"Loading...",
+    displayLatestSnippets:true,
    
    
  
     }),//slut data
     methods:{
 
-        saveId(snippetId){
-            console.log("Sparat id är: ",snippetId);
-            
-        },
         getSnippets(choice){
 
             console.log("i getsnippets, choise är: ",choice);
@@ -83,17 +79,22 @@ export default {
 
         
             if(choice=='?latest'){
-                console.log("I ifsats latest");
                 
+                this.Welcome="Senaste snippets"
+                this.displayReported=false
+                this.displayLatestSnippets=true,
                 this.snippetsList=response.data;
+            
             }
             else if(choice=='?reported'){
-                console.log("I ifsats reported");
-                this.displayReportedList=true
                 
-                this.reportedSnippetsList=response.data;
-    
+                this.Welcome="Rapporterade snippets"
+                this.displayReported=true
+                this.displayLatestSnippets=false,
+                this.snippetsList=response.data;
+                
             }
+            //TODO else if popular
            
             
             })//slut api get latest
@@ -122,30 +123,12 @@ export default {
 
         },
      
-        // reportSnippet(snippetId){
-            
-        //     fetch (this.baseUrl,
-        //     {
-        //         method:"POST",
-        //         body:new URLSearchParams("?report&id="+snippetId),
-        //     })
-        //     .then((response)=>{
-        //         console.log("Response från api report: ", response);
-                
-        //     })
-        //     .catch((error)=>{
-        //         console.log("Error i report: ", error);
-                
-        //     })
-        //     this.getLatestSnippets()
-
-        // },
- 
-    
+       
     },//slut methods
     created: function (){
        this.getSnippets('?latest')
-    }//slut created
+    },//slut created
+    
 
 }//slut export default
 
@@ -157,8 +140,16 @@ export default {
     background-color:#ebe6d1;
    
 }
-h2{
+h1{
+    margin:1em;
     color:#2e303f;
+    font-family: "Montserrat";
+}
+h2{
+    margin:1em;
+    color:#c24332;
+    font-family: Helvetica, monospace;
+    
 }
 
 .snippets{
@@ -204,7 +195,7 @@ font-family: Helvetica, monospace;
 .list{
     
     border-radius:0.3em;
-    margin:0.5em;
+    margin:1em;
     padding:0.5em;
     background-color:white;
 }
