@@ -10,11 +10,11 @@
 
         <div v-if="snippetsList!='Loading...'" class=snippetsContainer>
 
-            <div class="selectButtonsContainer">
+            <div class="tabButtonsContainer">
                 
-                <button @click="getSnippets('?latest')" class="selectButton">Latest</button>
-                <button @click="getSnippets()" class="selectButton">Popular</button>
-                <button @click="getSnippets('?reported')" class="selectButton" >Reported</button>
+                <button @click="getSnippets('?latest')" class="tabButton">Senaste</button>
+                <button @click="getSnippets('?best')" class="tabButton">Favvosar</button>
+                <button @click="getSnippets('?reported')" class="tabButton" >Rapporterade</button>
 
             </div>
       
@@ -94,6 +94,13 @@ export default {
                 this.snippetsList=response.data;
                 
             }
+            else if(choice=='?best'){
+                this.Welcome="Bästa snippets"
+                console.log("I best, choice är: ", choice);
+                this.snippetsList=response.data;
+                console.log("I populär är data: ", this.snippetsList);
+                
+            }
             //TODO else if popular
            
             
@@ -166,7 +173,7 @@ font-family: Helvetica, monospace;
 
 
 }
-.selectButton{
+.tabButton{
   
     border:2px solid #63948c;
     border-radius:0.3em 0.3em 0 0;
@@ -179,12 +186,12 @@ font-family: Helvetica, monospace;
     margin-top:2em;
 
 }
-.selectButtonsContainer :first-child {
+.tabButtonsContainer :first-child {
 
-    margin-left:2.5em;
+    margin-left:2em;
 }
 
-.selectButton:hover, .selectButton:focus, .selectButton.selected{
+.tabButton:hover, .tabButton:focus, .tabButton.selected{
     background-color:#63948c;
 }
 .idButton{
@@ -195,7 +202,7 @@ font-family: Helvetica, monospace;
 .list{
     
     border-radius:0.3em;
-    margin:1em;
+    margin:0.5em;
     padding:0.5em;
     background-color:white;
 }
