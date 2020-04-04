@@ -23,6 +23,7 @@
                     <h3 class="title">{{snippet.title}}</h3>
                     <p class="content">{{snippet.content}}</p>
                     <p>Uploaded: {{snippet.upload_dt}}</p>
+                    <p>Id: {{snippet.id}}</p>
 
                     <template v-if="displayBest || displayLatest">
                         <p>Score: {{snippet.score}}</p>
@@ -136,14 +137,19 @@ export default {
         },//slut funktion getSnippets
        
        async postSnippet(snippetId, choice){
+            console.log("Id:", snippetId);
+            let object={snippetId, choice}
+            console.log("OBject:", object);
+            
        
-            console.log("ID: ",snippetId);
+            console.log("ID är typ: ",typeof(snippetId)  );
             console.log("Choice:",choice);
             this.isLoading=true;
             this.errorMessage="";
    
             try {
-                let response=await axios.post(this.baseUrl,{[choice]:"",id:[snippetId]});
+                // let response=await axios.post(this.baseUrl,{[choice]:"",id:[snippetId]});
+                  let response=await axios.post(this.baseUrl,{[choice]:"",id:snippetId});
                
                     console.log("Api data POST: ",response.data);
                
