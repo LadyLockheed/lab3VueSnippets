@@ -2,51 +2,54 @@
     
 
     <div class="snippets">
-        <!--TODO ändra namn på denna template -->
-        <h1>{{Welcome}}</h1>
-        <p>Displayreported: {{displayReported}}</p>
-        
-        <h2 v-if="snippetsList=='Loading...'">{{snippetsList}}</h2>
 
-        <div v-if="snippetsList!='Loading...'" class=snippetsContainer>
+        <h1 v-if="!isLoading">{{currentTab}}</h1>
+        <h1 v-if="isLoading">{{loadingMessage}}</h1>
+        <h2>{{errorMessage}}</h2>
 
-            <div class="tabButtonsContainer">
-                
-                <button @click="getSnippets('?latest')" class="tabButton">Senaste</button>
-                <button @click="getSnippets('?best')" class="tabButton">Favvosar</button>
-                <button @click="getSnippets('?reported')" class="tabButton" >Rapporterade</button>
-
-            </div>
-      
-
+        <div class="tabButtonsContainer">
             
-            <div class="listContainer">
+            <button @click="getSnippets('latest')" class="tabButton">Latest</button>
+            <button @click="getSnippets('best')" class="tabButton">Best</button>
+            <button @click="getSnippets('reported')" class="tabButton" >Reported</button>
 
+        </div>
+    
+        <div class="listContainer">
 
-                <div v-for="snippet in snippetsList" :key="snippet.id" class="list">   
-               
-                    <h3>{{snippet.title}}</h3>
-                    <p>{{snippet.content}}</p>
-                    <p>Score: {{snippet.score}}</p>
-                    <!-- <div v-if="displayReported">Rapporterad: {{snippet.is_reported}}</div> -->
-                    <p>Rapporterad: {{snippet.is_reported}}</p>
-                   
-                    
-                    
-                    <div class="buttons" v-if="displayLatestSnippets">
-                    
-                        
-                        <button @click="postSnippet(snippet.id,'?report&id=' )">Report snippet</button>
-                        <button @click="postSnippet(snippet.id, '?upvote&id=')">Upvote</button>
-                        <button @click="postSnippet(snippet.id, '?downvote&id=')">Downvote</button>
+            <div v-for="snippet in snippetsList" :key="snippet.id" class="list">   
+                
+                <div class="informationContainer">
+                    <h3 class="title">{{snippet.title}}</h3>
+                    <p class="content">{{snippet.content}}</p>
+                    <p>Uploaded: {{snippet.upload_dt}}</p>
 
-                    </div>
-              
+                    <template v-if="displayBest || displayLatest">
+                        <p>Score: {{snippet.score}}</p>
+                    </template>
+                    
+                    <template v-if="displayReported"> 
+                        <p>Reported: {{snippet.is_reported}}</p>
+                    </template>
+
+                </div>
+
+                <div class="buttonsForLatest" v-if="displayLatest ||displayBest">
+           
+                    <button @click="postSnippet(snippet.id, 'upvote')" :disabled="isLoading">Upvote</button>
+                    <button @click="postSnippet(snippet.id, 'downvote')" :disabled="isLoading">Downvote</button>
+                    <button @click="postSnippet(snippet.id,'report' )" :disabled="isLoading">Report snippet</button>
+
+                </div>
+            
+                <div class="buttonsForReported" v-if="displayReported">
+                    
+                    <button @click="postSnippet(snippet.id,'unreport')" :disabled="isLoading">Unreport</button>
+                    <button @click="postSnippet(snippet.id,'delete')" :disabled="isLoading">Delete</button>
+                
                 </div>
             </div>
-      
         </div>
-     
     </div>
 
 </template>
@@ -56,84 +59,122 @@ import axios from 'axios'
 export default {
 
     data:()=>({
-    Welcome:"Senaste snippets",
+    currentTab:"",
     baseUrl:"https://www.forverkliga.se/JavaScript/api/api-snippets.php",
-    snippetsList:"Loading...",
-    testNewList:"",
+    snippetsList:"",
+    isLoading:false,
+    loadingMessage:"Loading...",
     displayReported:false,
-    // reportedSnippetsList:"Loading...",
-    displayLatestSnippets:true,
+    displayBest:false,
+    
+    displayLatest:true,
+    // smallButton:"smallButtonNoClick"
+    errorMessage:"",
+    
    
    
  
     }),//slut data
     methods:{
 
-        getSnippets(choice){
-
+      
+        async getSnippets(choice){
+      
             console.log("i getsnippets, choise är: ",choice);
+            this.isLoading=true;
+            this.errorMessage="";
             
-            axios.get(this.baseUrl+choice).then((response)=>{
-        
-            console.log("Hämtat från api: ", response);
+            try{
+                let response=await axios.get(this.baseUrl,{
+                    // params:{latest:""}
+                    params:{[choice]:""}
+                });
+                    console.log("Api data GET: ",response.data);
+                if(choice=='latest'){
 
-        
-            if(choice=='?latest'){
-                
-                this.Welcome="Senaste snippets"
-                this.displayReported=false
-                this.displayLatestSnippets=true,
-                this.snippetsList=response.data;
+                    this.currentTab="Latest snippets"
+                    this.displayReported=false
+                    this.displayBest=false
+                    this.displayLatest=true
+                    this.isLoading=false;
+                    
+                    this.snippetsList=response.data
             
-            }
-            else if(choice=='?reported'){
+                }
+                else if (choice=='reported'){
+                    this.currentTab="Reported snippets"
+                    this.displayReported=true
+                    this.displayLatest=false
+                    this.displayBest=false
+                        this.isLoading=false;
+                    this.snippetsList=response.data
                 
-                this.Welcome="Rapporterade snippets"
-                this.displayReported=true
-                this.displayLatestSnippets=false,
-                this.snippetsList=response.data;
-                
-            }
-            else if(choice=='?best'){
-                this.Welcome="Bästa snippets"
-                console.log("I best, choice är: ", choice);
-                this.snippetsList=response.data;
-                console.log("I populär är data: ", this.snippetsList);
-                
-            }
-            //TODO else if popular
-           
-            
-            })//slut api get latest
+                }
+                else if (choice=='best'){
+                    this.currentTab="Best snippets"
 
+                    this.displayReported=false
+                    this.displayLatest=false
+                    this.displayBest=true
+                        this.isLoading=false;
+
+
+                    this.snippetsList=response.data
+                        
+
+                }
+        
+            }
+            catch(error){
+                console.log("Nåt blev fel: ", error);
+                this.errorMessage=error
+                
+            }
+          
             
+        
         },//slut funktion getSnippets
-        postSnippet(snippetId, choice){
-
-               fetch (this.baseUrl,
-            {
-                method:"POST",
-                body:new URLSearchParams(choice+snippetId),
+       
+       async postSnippet(snippetId, choice){
+       
+            console.log("ID: ",snippetId);
+            console.log("Choice:",choice);
+            this.isLoading=true;
+            this.errorMessage="";
+   
+            try {
+                let response=await axios.post(this.baseUrl,{[choice]:"",id:[snippetId]});
                
-            })
-            .then((response)=>{
-                console.log("PostSnippet: ", response);
+                    console.log("Api data POST: ",response.data);
+               
+                }    
+            catch (error){
+                this.errorMessage=error
+                this.isLoading=false;
+                console.log("Nåt är fel: ", error);
                 
-            })
-            .catch((error)=>{
-                console.log("Error i postsnippet ", error);
-                
-            })
+            }
+            finally{
+                this.isLoading=false;
+            }
 
-            this.getSnippets('?latest')
-
-
+            if(this.currentTab=="Latest snippets"){
+                this.getSnippets("latest")
+            }
+            else if(this.currentTab=="Reported snippets"){
+                this.getSnippets("reported")
+        
+            }
+            else if(this.currentTab=="Best snippets"){
+                this.getSnippets("best") 
+            }
+    
         },
      
        
     },//slut methods
     created: function (){
-       this.getSnippets('?latest')
+       this.getSnippets('latest')
     },//slut created
     
 
@@ -145,12 +186,108 @@ export default {
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 .snippetsContainer{
     background-color:#ebe6d1;
-   
+    
 }
+
+.list{
+    
+    border-radius:0.3em;
+    margin:0.5em;
+    padding:1em;
+    background-color:white;
+    
+    display:grid;
+    grid-template-columns: repeat(15, 1fr);
+    grid-template-rows:auto;
+  
+}
+.informationContainer{
+   
+    grid-column:1/15;
+
+}
+
+
+.buttonsForLatest{
+   
+    grid-column-end:16;
+
+}
+.buttonsForLatest > button{
+    padding:0.3em;
+    margin:0.2em;
+    margin-top:2em;
+    border:none;
+    border: 2px solid #2e303f;
+    border-radius:0.3em;
+    width:6em;
+    background-color:#63948c;
+    color:white;
+
+}
+
+.buttonsForLatest > button:nth-child(3){
+    padding:0.3em;
+     margin:0.3em;
+     margin-top:1em;
+    border:none;
+     border-radius:0.3em;
+    width:12.3em;
+    background-color:#c24332;
+    color:white;
+    display:block;
+    
+
+}
+.buttonsForLatest > button:hover {
+    cursor:pointer;
+}
+.buttonsForLatest > button:disabled {
+	background-color: #d39891;
+	color: lightgray;
+}
+.buttonsForReported>button:hover{
+    cursor:pointer;
+}
+.buttonsForReported >button:disabled{
+    background-color: #d39891;
+    color: lightgray;
+}
+
+.buttonsForReported{
+    grid-column-end:16;
+    margin-top:1em;
+ 
+}
+.buttonsForReported >button{
+    padding:0.3em;
+    margin:0.2em;
+    border:none;
+    border-radius:0.3em;
+    width:6em;
+    background-color:#63948c;
+    color:white;
+
+}
+.buttonsForReported > button:nth-child(2){
+    background-color:#c24332;
+}
+
+
+
+
+/* .smallButtonNoClick{
+    background-color:grey;
+}
+.smallButtonClick{
+    background-color:hotpink;
+} */
+
 h1{
-    margin:1em;
+    margin:0.5em 1em 0.5em 0.5em;
     color:#2e303f;
     font-family: "Montserrat";
+    
 }
 h2{
     margin:1em;
@@ -158,21 +295,40 @@ h2{
     font-family: Helvetica, monospace;
     
 }
-
+.title{
+    font-family: Helvetica, monospace;
+    color:#2e303f;
+    margin:0;
+   
+   
+}
+.loadingMsg{
+    display:inline-block;
+}
+.content{
+    font-size:1em;
+    border-radius:0.3em;
+    padding:0.3em;
+    margin:0.5em 2em 1em 0em;
+    margin-bottom:0.3em;
+    background-color:#ebe6d1
+}
 .snippets{
-color:white;
-font-family: Helvetica, monospace;
+    color:white;
+    font-family: Helvetica, monospace;
+    padding:1em;
 
 }
 .listContainer{
     
     background-color:#63948c;
-    border-radius:0.5em;
-    padding:0.5em;
+    border-radius:0 1em 1em 1em;
+    padding:1em;
     margin:0 1em 1em 1em;
-
+    
 
 }
+
 .tabButton{
   
     border:2px solid #63948c;
@@ -188,24 +344,13 @@ font-family: Helvetica, monospace;
 }
 .tabButtonsContainer :first-child {
 
-    margin-left:2em;
+    margin-left:1.2em;
 }
 
 .tabButton:hover, .tabButton:focus, .tabButton.selected{
     background-color:#63948c;
 }
-.idButton{
-    padding:1em;
-    border-radius:1em;
-     border:1px solid grey;
-}
-.list{
-    
-    border-radius:0.3em;
-    margin:0.5em;
-    padding:0.5em;
-    background-color:white;
-}
+
 h3{
     margin-left:0em 1em 0em 2em;
     color:#2e303f;

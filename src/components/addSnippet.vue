@@ -1,7 +1,11 @@
 <template>
     
-
+<!-- TODO Fixa så att meddelande visas medans ny snippet laddas upp. OCh klar meddeleande vissa när man lyckats -->
+<!-- TODO Lägg valideringsmeddelandet i ett span för att det ska dyka upp brevid formuläret (om det får plats). Kanske dålig ide om sidan ska mobilanpassas, hmm -->
+<!-- TODO Kanske validera hela formuläret på en gång istället genom att klicka på knappen -->
+<!-- TODO ändra muspekaren -->
     <div class="addSnippet">
+    <h2>{{errorMessage}}</h2>
         
      <div class="form">
         <label for="title">Title</label>
@@ -11,6 +15,9 @@
 
             <input type="text" id="title" placeholder="Title" v-model="newSnippet.title" 
 			@blur.once="titleIsTouched = true"/>
+            
+            
+            <p class="valid">{{validmessage}}</p>
         
         
         
@@ -28,110 +35,45 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 export default {
 
     data:()=>({
        newSnippet:{id:null, title:"", content:""},
        baseUrl:"https://www.forverkliga.se/JavaScript/api/api-snippets.php",
        titleIsTouched: false,
-       failToUploadmsg:""
+       errorMessage:"",
+       validmessage:"Du gjorde fel"
        
 
         
     }),
     methods:{
-        addNewSnippet(){
-           
+       
+       async addNewSnippet(){
+
+           //TODO validering. Använd computed properties för att kolla om flera validreringsgrejer är ok, returnera true eller false till submitknappen.
+
             let NewTitle=this.newSnippet.title
             let NewContent=this.newSnippet.content
-                
-                // skickar till api 
-                //!Min gamla kod med axios, utan body och tags
-            //    axios.post(this.baseUrl+"?add&title="+NewTitle+"&content="+NewContent).then((Response)=>{
-
-            //         let test=Response
-            //         console.log("Response: ",Response);
-            //         console.log("Response: ",Response.data);
-            //         console.log("config:", Response.config);
-            //         this.newSnippet=Response.data
-                
-            //     })
-            //     .catch ((error)=> {
-            //         console.log("Error: ", error);
-            //         this.failToUploadmsg="Lyckades inte ladda upp";
-                    
-                    
-            //     })
-            //!SLut min gamla kod med axios utan body och tag
-            //! Test ny kod från Jonas, med fetch
-              fetch (this.baseUrl,
-              {
-                  method:"POST",
-                  body: new URLSearchParams("?add&title="+NewTitle+"&content="+NewContent+"&tags=tagUrIt"),
+    
+            try {
+                 let response=await axios.post(this.baseUrl,
+                     {add:"", title:NewTitle, content:NewContent});
               
-              })
-              .then((response)=>{
-                  console.log("Response från api: ", response);
-                  
-              })
-              .catch((error)=>{
-                console.log("Error please try again: ", error);
-
-              })
-
-            //tömmer inputfälten
-            //TODO Title fältet blir felvaliderat när man skickat och den tömt fältet. 
-            // this.newSnippet.title="";
-            // this.newSnippet.content=""
-
-            
-
-
-            //=================
-            //!Jonas kod med fetch som funkar att posta. HAr med body och tags
-                // fetch('https://www.forverkliga.se/JavaScript/api/api-snippets.php', {
-                //         method: 'POST',
-                //         body: new URLSearchParams('add&title=' + this.model.formTitle + '&content=' + this.model.formContent + '&tags=tag1'),
-                //     })
-                //     .then((response) => {
-                //         this.waitingForApi(false),
-                //         this.$emit('newSnippet', response)
-                //     })
-
-
-
-
-
-        //    fetch(this.baseUrl+"?add&title="+NewTitle+"&content="+NewContent, {
-        //             method: 'POST',
-                    
-        //         })
-        //         .then(response => response.json())
-        //         .then((data) => {
-                    
-        //             let snippets = data;
-        //             console.log("Från api: ", data);
-                    
-        //         })
-        //         .catch((error) => {
-                   
-        //             console.log("Error: ",error);
-                 
-        //         })
-
-
-
-        
-            
-        
+                    console.log("Från api: ", response.data);
+                    console.log("Detta är i axios");
+            } 
+            catch (error){
+                this.errorMessage=error
+                console.log("Nåt är fel: ", error);
                 
+            }
 
-           
-            
-             
-                
-          
+
+               
+    
+               
             
         }//slut addNewSnippet
 
@@ -158,12 +100,14 @@ export default {
 </script>
 <style scoped>
 
+
 .addSnippet{
-   
+   padding:1em;
    
 }
 .form{
     display:grid;
+    
     border: 1px solid gray;
 	border-radius: 1em;
     padding:1em;
@@ -175,6 +119,7 @@ export default {
     padding:0.5em;
     border-radius:0.3em;
     border:3px solid lightblue;
+    width:70%
   
 }
 .form >textarea{
@@ -183,10 +128,12 @@ export default {
     display:block;
      border-radius:0.3em;
      border:3px solid lightblue;
+      width:70%
 }
 .form>label{
     margin:0.5em 0em 0.4em 0.8em;
     color:rgb(133, 111, 136);
+    font-family: Helvetica, monospace;
    
 }
 input.valid { border-color: green; }
@@ -194,6 +141,24 @@ input.invalid { border-color: red; }
 .error {
 	color: red;
 	font-size: 90%;
+}
+button{
+    padding:0.5em;
+    font-family: Helvetica, monospace;
+    margin:1em;
+    width:70%;
+    border-radius:0.3em;
+    border:2px solid #63948c;
+ 
+}
+.valid{
+    display:inline-block;
+}
+@media (max-width: 600px)  {
+    button{
+        color:hotpink;
+    }
+
 }
 
 </style>

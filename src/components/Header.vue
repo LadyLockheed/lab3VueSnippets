@@ -4,14 +4,9 @@
     <img src="../assets/Logga_montserrat.svg" alt="logo" @click="handleDisplayHome">
     
     <div class="navBar">
-    <!--  
-      <ul>
-        <li @click="handleDisplaySnippets">Snippets</li>
-        <li @click="handleDisplayAddSnippet">Lägg till snippet</li>
-        
-      </ul> -->
+ 
       <button @click="handleDisplaySnippets">Snippets</button>
-      <button @click="handleDisplayAddSnippet">Lägg till snippets</button>
+      <button @click="handleDisplayAddSnippet">Add snippet</button>
 
     </div>
     
@@ -44,7 +39,6 @@ export default {
 
     },
     handleDisplayHome(){
-      console.log("Klick på image funkar");
       
       this.$emit("showHome")
 
@@ -68,6 +62,9 @@ export default {
 img{
   margin-left:1em;
 }
+img:hover{
+  cursor:pointer;
+}
 button{
   margin: 0em 1em 0;
   color:white;
@@ -84,5 +81,6 @@ button:hover, button:focus, button.selected{
   cursor: pointer;
   outline:0;
 }
+
 
 </style>
