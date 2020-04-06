@@ -8,9 +8,9 @@
 
         <div class="tabButtonsContainer">
             
-            <button @click="getSnippets('latest')" class="inactiveTab" :class="{activeTab:latestIsActive}">Latest</button>
-            <button @click="getSnippets('best')" class="inactiveTab" :class="{activeTab:bestIsActive}">Best</button>
-            <button @click="getSnippets('reported')" class="inactiveTab" :class="{activeTab:reportedIsActive}">Reported</button>
+            <button @click="getSnippets('latest')" class="inactiveTab" :class="{activeTab:latestIsActive}" :disabled="isLoading">Latest</button>
+            <button @click="getSnippets('best')" class="inactiveTab" :class="{activeTab:bestIsActive}" :disabled="isLoading">Best</button>
+            <button @click="getSnippets('reported')" class="inactiveTab" :class="{activeTab:reportedIsActive}" :disabled="isLoading">Reported</button>
 
         </div>
     
@@ -180,6 +180,10 @@ export default {
     font-weight:bold;
     padding:0.7em;
     margin-top:2em;
+}
+.inactiveTab:disabled{
+    color:#cca28f;
+
 }
 .tabButtonsContainer :first-child {
     margin-left:1.2em;
