@@ -1,9 +1,6 @@
 <template>
     
-<!-- TODO Fixa så att meddelande visas medans ny snippet laddas upp. OCh klar meddeleande vissa när man lyckats -->
-<!-- TODO Lägg valideringsmeddelandet i ett span för att det ska dyka upp brevid formuläret (om det får plats). Kanske dålig ide om sidan ska mobilanpassas, hmm -->
-<!-- TODO Kanske validera hela formuläret på en gång istället genom att klicka på knappen -->
-<!-- TODO ändra muspekaren -->
+<!-- Fixa så att invalimeddelandena blir gröna när man fyllt i rätt -->
     <div class="addSnippet">
 
         <h1 v-if="!isLoading">{{headline}}</h1>
@@ -25,7 +22,7 @@
            
             <!-- Submit -->
             <button @click="addNewSnippet" :disabled="!contentIsValid || !titleIsValid || isLoading">Save snippet</button>
-             <!-- <p>Listan: {{newSnippet}}</p> -->
+            
 
              <h2 v-if="isAdded">New snippet added!</h2>
         </div>
@@ -63,8 +60,6 @@ export default {
            this.isAdded="";
            this.isLoading=true;
 
-           //TODO validering. Använd computed properties för att kolla om flera validreringsgrejer är ok, returnera true eller false till submitknappen.
-
             let NewTitle=this.newSnippet.title
             let NewContent=this.newSnippet.content
     
@@ -76,6 +71,11 @@ export default {
                    
                     this.isAdded=true;
                     this.isLoading=false;
+                    this.titleIsTouched=false
+                    this.contentIsTouched=false
+                    this.newSnippet.title=""
+                    this.newSnippet.content=""
+                    
             } 
             catch (error){
                 this.errorMessage=error

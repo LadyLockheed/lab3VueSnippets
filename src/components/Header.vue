@@ -28,7 +28,6 @@ export default {
     handleDisplaySnippets(){
  
       let displaySnippets=true;
-      
       this.$emit("showSnippets", displaySnippets) // skickar till app
 
     },

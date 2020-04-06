@@ -9,9 +9,9 @@
 
         <div class="tabButtonsContainer">
             
-            <button @click="getSnippets('latest')" class="tabButton">Latest</button>
-            <button @click="getSnippets('best')" class="tabButton">Best</button>
-            <button @click="getSnippets('reported')" class="tabButton" >Reported</button>
+            <button @click="getSnippets('latest')" class="inactiveTab" :class="{activeTab:latestIsActive}">Latest</button>
+            <button @click="getSnippets('best')" class="inactiveTab" :class="{activeTab:bestIsActive}">Best</button>
+            <button @click="getSnippets('reported')" class="inactiveTab" :class="{activeTab:reportedIsActive}">Reported</button>
 
         </div>
     
@@ -23,19 +23,19 @@
                     <h3 class="title">{{snippet.title}}</h3>
                     <p class="content">{{snippet.content}}</p>
                     <p>Uploaded: {{snippet.upload_dt}}</p>
-                    <p>Id: {{snippet.id}}</p>
+                    
 
-                    <template v-if="displayBest || displayLatest">
+                    <template v-if="!displayReported">
                         <p>Score: {{snippet.score}}</p>
                     </template>
-                    
+             
                     <template v-if="displayReported"> 
                         <p>Reported: {{snippet.is_reported}}</p>
                     </template>
 
                 </div>
 
-                <div class="buttonsForLatest" v-if="displayLatest ||displayBest">
+                <div class="buttonsForLatest" v-if="!displayReported">
            
                     <button @click="postSnippet(snippet.id, 'upvote')" :disabled="isLoading">Upvote</button>
                     <button @click="postSnippet(snippet.id, 'downvote')" :disabled="isLoading">Downvote</button>
@@ -66,28 +66,23 @@ export default {
     isLoading:false,
     loadingMessage:"Loading...",
     displayReported:false,
-    displayBest:false,
-    
-    displayLatest:true,
-    // smallButton:"smallButtonNoClick"
     errorMessage:"",
-    
-   
-   
- 
+    latestIsActive:"",
+    bestIsActive:"",
+    reportedIsActive:"",
+
     }),//slut data
     methods:{
 
-      
         async getSnippets(choice){
       
             console.log("i getsnippets, choise är: ",choice);
             this.isLoading=true;
             this.errorMessage="";
+           
             
             try{
                 let response=await axios.get(this.baseUrl,{
-                    // params:{latest:""}
                     params:{[choice]:""}
                 });
                     console.log("Api data GET: ",response.data);
@@ -95,35 +90,31 @@ export default {
 
                     this.currentTab="Latest snippets"
                     this.displayReported=false
-                    this.displayBest=false
-                    this.displayLatest=true
-                    this.isLoading=false;
-                    
-                    this.snippetsList=response.data
+                    this.latestIsActive=true;
+                    this.reportedIsActive=false;
+                    this.bestIsActive=false;
             
                 }
                 else if (choice=='reported'){
                     this.currentTab="Reported snippets"
                     this.displayReported=true
-                    this.displayLatest=false
-                    this.displayBest=false
-                        this.isLoading=false;
-                    this.snippetsList=response.data
-                
+                    this.reportedIsActive=true;
+                    this.latestIsActive=false;
+                    this.bestIsActive=false;
+                     
+           
                 }
                 else if (choice=='best'){
                     this.currentTab="Best snippets"
-
                     this.displayReported=false
-                    this.displayLatest=false
-                    this.displayBest=true
-                        this.isLoading=false;
-
-
-                    this.snippetsList=response.data
-                        
+                    this.bestIsActive=true;
+                    this.latestIsActive=false;
+                    this.reportedIsActive=false;
+                   
 
                 }
+                    this.snippetsList=response.data
+                    this.isLoading=false;
         
             }
             catch(error){
@@ -131,6 +122,7 @@ export default {
                 this.errorMessage=error
                 
             }
+           
           
             
         
@@ -147,13 +139,12 @@ export default {
             this.isLoading=true;
             this.errorMessage="";
    
-            try {
-                // let response=await axios.post(this.baseUrl,{[choice]:"",id:[snippetId]});
-                  let response=await axios.post(this.baseUrl,{[choice]:"",id:snippetId});
+            try{
+                let response=await axios.post(this.baseUrl,{[choice]:"",id:snippetId});
+            
+                console.log("Api data POST: ",response.data);
                
-                    console.log("Api data POST: ",response.data);
-               
-                }    
+            }    
             catch (error){
                 this.errorMessage=error
                 this.isLoading=false;
@@ -193,6 +184,40 @@ export default {
 .snippetsContainer{
     background-color:#ebe6d1;
     
+}
+.inactiveTab{
+  
+    border:2px solid #63948c;
+    border-radius:0.3em 0.3em 0 0;
+    background-color:#ebe6d1;
+    color:#2e303f;
+    letter-spacing: 0.5px;	
+	text-transform: uppercase;
+    font-weight:bold;
+    padding:0.7em;
+    margin-top:2em;
+
+}
+
+.tabButtonsContainer :first-child {
+
+    margin-left:1.2em;
+}
+
+.inactiveTab:hover, .inactiveTab:focus, .inactiveTab.selected{
+    background-color:#63948c;
+}
+.activeTab{
+    border:2px solid #63948c;
+    border-radius:0.3em 0.3em 0 0;
+    background-color:#63948c;
+    color:white;
+    letter-spacing: 0.5px;	
+	text-transform: uppercase;
+    font-weight:bold;
+    padding:0.7em;
+    margin-top:2em;
+
 }
 
 .list{
@@ -278,17 +303,6 @@ export default {
 .buttonsForReported > button:nth-child(2){
     background-color:#c24332;
 }
-
-
-
-
-/* .smallButtonNoClick{
-    background-color:grey;
-}
-.smallButtonClick{
-    background-color:hotpink;
-} */
-
 h1{
     margin:0.5em 1em 0.5em 0.5em;
     color:#2e303f;
@@ -335,27 +349,7 @@ h2{
 
 }
 
-.tabButton{
-  
-    border:2px solid #63948c;
-    border-radius:0.3em 0.3em 0 0;
-    background-color:#ebe6d1;
-    color:#2e303f;
-    letter-spacing: 0.5px;	
-	text-transform: uppercase;
-    font-weight:bold;
-    padding:0.7em;
-    margin-top:2em;
 
-}
-.tabButtonsContainer :first-child {
-
-    margin-left:1.2em;
-}
-
-.tabButton:hover, .tabButton:focus, .tabButton.selected{
-    background-color:#63948c;
-}
 
 h3{
     margin-left:0em 1em 0em 2em;
