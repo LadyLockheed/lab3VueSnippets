@@ -14,18 +14,14 @@ export default {
     data:()=>({
 
         
-        })
+    })
 
 }
 </script>
 
 
 <style scoped>
-    @import url(https://fonts.googleapis.com/css?family=Roboto);
-    @import url(https://fonts.googleapis.com/css?family=Roboto+Mono:500&display=swap);
-    @import url('https://fonts.googleapis.com/css?family=Liu+Jian+Mao+Cao&display=swap');
-    @import url('https://fonts.googleapis.com/css?family=Indie+Flower&display=swap');
-    @import url('https://fonts.googleapis.com/css?family=Rasa&display=swap');
+
     @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
     
     .home{
@@ -33,7 +29,6 @@ export default {
         
     }
     h1{
-
         font-family:'Montserrat', sans-serif;
         font-size:3.5em;
         padding-top:1.5em;
@@ -49,7 +44,7 @@ export default {
         animation-duration: 3s;
     }
     @keyframes textFadeIn {
-    0% { 
+        0% { 
             opacity: 0; 
         } 
         100% { 

@@ -1,24 +1,23 @@
 <template>
+  
   <div id="app">
 
-    
- <div class="contentWrap">
-    <Header @showSnippets="onSnippetClick" @showAddSnippet="onAddSnippetClick" @showHome="onHomeClick"/>
+    <div class="contentWrap">
+        
+        <Header @showSnippets="onSnippetClick" @showAddSnippet="onAddSnippetClick" @showHome="onHomeClick"/>
 
-    <Home v-if="!displaySnippets && !displayAddSnippets"/>
- 
-    <template v-if="displaySnippets==true">
-      <Snippets/>
-    </template>
+        <Home v-if="!displaySnippets && !displayAddSnippets"/>
     
-    <template v-if="displayAddSnippets==true">
-      <addSnippet/>
-    </template>
+        <template v-if="displaySnippets==true">
+          <Snippets/>
+        </template>
+        
+        <template v-if="displayAddSnippets==true">
+          <addSnippet/>
+        </template>
 
 
- </div>
-  
-    
+    </div>
 
     <Footer/>
   
@@ -68,10 +67,8 @@ export default {
       this.displaySnippets=false;
 
     }
-    
-
+ 
   },
-
 
 }
 </script>

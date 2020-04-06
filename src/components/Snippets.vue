@@ -1,5 +1,4 @@
 <template>
-    
 
     <div class="snippets">
 
@@ -75,17 +74,15 @@ export default {
     methods:{
 
         async getSnippets(choice){
-      
-            console.log("i getsnippets, choise är: ",choice);
+    
             this.isLoading=true;
             this.errorMessage="";
-           
-            
+        
             try{
                 let response=await axios.get(this.baseUrl,{
                     params:{[choice]:""}
                 });
-                    console.log("Api data GET: ",response.data);
+                   
                 if(choice=='latest'){
 
                     this.currentTab="Latest snippets"
@@ -101,8 +98,7 @@ export default {
                     this.reportedIsActive=true;
                     this.latestIsActive=false;
                     this.bestIsActive=false;
-                     
-           
+              
                 }
                 else if (choice=='best'){
                     this.currentTab="Best snippets"
@@ -110,15 +106,13 @@ export default {
                     this.bestIsActive=true;
                     this.latestIsActive=false;
                     this.reportedIsActive=false;
-                   
-
+              
                 }
                     this.snippetsList=response.data
                     this.isLoading=false;
         
             }
             catch(error){
-                console.log("Nåt blev fel: ", error);
                 this.errorMessage=error
                 
             }
@@ -129,27 +123,18 @@ export default {
         },//slut funktion getSnippets
        
        async postSnippet(snippetId, choice){
-            console.log("Id:", snippetId);
-            let object={snippetId, choice}
-            console.log("OBject:", object);
-            
-       
-            console.log("ID är typ: ",typeof(snippetId)  );
-            console.log("Choice:",choice);
+    
             this.isLoading=true;
             this.errorMessage="";
    
             try{
-                let response=await axios.post(this.baseUrl,{[choice]:"",id:snippetId});
-            
-                console.log("Api data POST: ",response.data);
-               
+               await axios.post(this.baseUrl,{[choice]:"",id:snippetId});
+         
             }    
             catch (error){
                 this.errorMessage=error
                 this.isLoading=false;
-                console.log("Nåt är fel: ", error);
-                
+          
             }
             finally{
                 this.isLoading=false;
@@ -186,7 +171,6 @@ export default {
     
 }
 .inactiveTab{
-  
     border:2px solid #63948c;
     border-radius:0.3em 0.3em 0 0;
     background-color:#ebe6d1;
@@ -196,14 +180,10 @@ export default {
     font-weight:bold;
     padding:0.7em;
     margin-top:2em;
-
 }
-
 .tabButtonsContainer :first-child {
-
     margin-left:1.2em;
 }
-
 .inactiveTab:hover, .inactiveTab:focus, .inactiveTab.selected{
     background-color:#63948c;
 }
@@ -217,32 +197,21 @@ export default {
     font-weight:bold;
     padding:0.7em;
     margin-top:2em;
-
 }
-
 .list{
-    
     border-radius:0.3em;
     margin:0.5em;
     padding:1em;
     background-color:white;
-    
     display:grid;
     grid-template-columns: repeat(15, 1fr);
     grid-template-rows:auto;
-  
 }
 .informationContainer{
-   
     grid-column:1/15;
-
 }
-
-
 .buttonsForLatest{
-   
     grid-column-end:16;
-
 }
 .buttonsForLatest > button{
     padding:0.3em;
@@ -254,21 +223,17 @@ export default {
     width:6em;
     background-color:#63948c;
     color:white;
-
 }
-
 .buttonsForLatest > button:nth-child(3){
     padding:0.3em;
-     margin:0.3em;
-     margin-top:1em;
+    margin:0.3em;
+    margin-top:1em;
     border:none;
-     border-radius:0.3em;
+    border-radius:0.3em;
     width:12.3em;
     background-color:#c24332;
     color:white;
     display:block;
-    
-
 }
 .buttonsForLatest > button:hover {
     cursor:pointer;
@@ -284,11 +249,9 @@ export default {
     background-color: #d39891;
     color: lightgray;
 }
-
 .buttonsForReported{
     grid-column-end:16;
     margin-top:1em;
- 
 }
 .buttonsForReported >button{
     padding:0.3em;
@@ -298,7 +261,6 @@ export default {
     width:6em;
     background-color:#63948c;
     color:white;
-
 }
 .buttonsForReported > button:nth-child(2){
     background-color:#c24332;
@@ -307,20 +269,16 @@ h1{
     margin:0.5em 1em 0.5em 0.5em;
     color:#2e303f;
     font-family: "Montserrat";
-    
 }
 h2{
     margin:1em;
     color:#c24332;
     font-family: Helvetica, monospace;
-    
 }
 .title{
     font-family: Helvetica, monospace;
     color:#2e303f;
     margin:0;
-   
-   
 }
 .loadingMsg{
     display:inline-block;
@@ -337,30 +295,20 @@ h2{
     color:white;
     font-family: Helvetica, monospace;
     padding:1em;
-
 }
 .listContainer{
-    
     background-color:#63948c;
     border-radius:0 1em 1em 1em;
     padding:1em;
     margin:0 1em 1em 1em;
-    
-
 }
-
-
-
 h3{
     margin-left:0em 1em 0em 2em;
     color:#2e303f;
-
-    /* padding:1em; */
 }
 p{
     color:#2e303f;
     margin-left:0em 1em 0em 2em;
 }
-
 
 </style>

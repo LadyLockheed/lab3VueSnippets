@@ -1,6 +1,5 @@
 <template>
     
-<!-- Fixa så att invalimeddelandena blir gröna när man fyllt i rätt -->
     <div class="addSnippet">
 
         <h1 v-if="!isLoading">{{headline}}</h1>
@@ -22,12 +21,9 @@
            
             <!-- Submit -->
             <button @click="addNewSnippet" :disabled="!contentIsValid || !titleIsValid || isLoading">Save snippet</button>
-            
-
+        
              <h2 v-if="isAdded">New snippet added!</h2>
         </div>
-     
-        
 
     </div>
 
@@ -49,77 +45,54 @@ export default {
        isLoading:false,
        isAdded:false,
        loadingMessage:"Loading..."
-      
-       
-
-        
     }),
     methods:{
        
        async addNewSnippet(){
-           this.isAdded="";
-           this.isLoading=true;
-
+            
+            this.isAdded="";
+            this.isLoading=true;
             let NewTitle=this.newSnippet.title
             let NewContent=this.newSnippet.content
     
             try {
-                 let response=await axios.post(this.baseUrl,
-                     {add:"", title:NewTitle, content:NewContent});
-              
-                    console.log("Från api: ", response.data);
-                   
-                    this.isAdded=true;
-                    this.isLoading=false;
-                    this.titleIsTouched=false
-                    this.contentIsTouched=false
-                    this.newSnippet.title=""
-                    this.newSnippet.content=""
+               await axios.post(this.baseUrl,{add:"", title:NewTitle, content:NewContent});
+           
+                this.isAdded=true;
+                this.isLoading=false;
+                this.titleIsTouched=false
+                this.contentIsTouched=false
+                this.newSnippet.title=""
+                this.newSnippet.content=""
                     
             } 
             catch (error){
                 this.errorMessage=error
-                console.log("Nåt är fel: ", error);
-                this.isLoading=false;
-                
+                this.isLoading=false;  
             }
-
-
-               
-    
-               
-            
+ 
         }//slut addNewSnippet
 
     },//slut methods
     computed:{
-        titleIsValid() {
+        titleIsValid(){
 			return this.newSnippet.title.length >= 1;
 			
         },
         contentIsValid(){
             return this.newSnippet.content.length >= 1;
         }
-		// titleClass() {
-		// 	if( !this.titleIsTouched ) return '';
-		// 	return this.titleIsValid ? 'valid' : 'invalid';
-		// },
-		// titleErrorMessage() {
-		// 	return 'Your title needs to contain at least 1 character'
-		// },
-
 
     }
 
-     
-
 }//slut export default
 </script>
+
 <style scoped>
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 
 .addSnippet{
-   padding:1em;
+    padding:1em;
    
 }
 h1{
@@ -128,18 +101,15 @@ h1{
     font-family: "Montserrat";
 }
 .form{
- 
     border: 3px solid #63948c;
 	border-radius: 1em;
     padding:1em;
     margin:1em;
     font-family: Helvetica, monospace;
-
 }
 .form > h2{
- margin-left:0.5em;
-  color:#2e303f;
- 
+    margin-left:0.5em;
+    color:#2e303f;
 }
 .form>input{
     margin:0em 1em 0.3em 1em;
@@ -161,30 +131,20 @@ h1{
 .form>label{
     margin:0.5em 0em 0.4em 0.8em;
     color:rgb(133, 111, 136);
-    /* font-family: Helvetica, monospace; */
     display:block;
-   
 }
 .invalidTitle{
     display:inline-block;
     border:2px solid #c24332;
     padding:0.3em;
-    /* font-family: Helvetica, monospace; */
-
 }
 .invalidContent{
     display:inline-block;
     border:2px solid #c24332;
     padding:0.3em;
-    /* font-family: Helvetica, monospace; */
-
-
 }
-
-
 button{
     padding:0.5em;
-    /* font-family: Helvetica, monospace; */
     margin:1em;
     margin-top:3em;
     width:70%;
@@ -192,7 +152,6 @@ button{
     border:none;
     background-color:#63948c;
     color:white;
- 
 }
 button:hover{
     cursor:pointer;
@@ -200,13 +159,6 @@ button:hover{
 button:disabled{
     background-color: #8ec9bf;
     color:rgb(172, 172, 172);
-}
-
-@media (max-width: 600px)  {
-    button{
-        color:hotpink;
-    }
-
 }
 
 </style>
